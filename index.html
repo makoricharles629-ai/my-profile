@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Developer Profile</title>
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 40px;
+      transition: background-color 0.3s ease;
+    }
+    .card {
+      background: white;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      margin: 5px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .link {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    body.dark-mode {
+      background-color: #111827;
+    }
+    body.dark-mode .card {
+      background-color: #1f2937;
+      color: white;
+    }
+    body.dark-mode .link {
+      color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <img src="profile.jpg" alt="Profile Picture" class="profile-img">
+    <h1>My Developer Profile</h1>
+    <p id="bio">Hello! I am learning how to build modern websites.</p>
+    
+    <div class="button-group">
+      <button id="text-btn">Change Text</button>
+      <button id="mode-toggle">Toggle Dark Mode</button>
+    </div>
+    
+    <p><a href="https://github.com" target="_blank" class="link">Check out my GitHub</a></p>
+  </div>
+
+  <script>
+    const textBtn = document.querySelector('#text-btn');
+    const modeBtn = document.querySelector('#mode-toggle');
+    const bio = document.querySelector('#bio');
+
+    textBtn.addEventListener('click', function() {
+      bio.textContent = "Awesome! You updated your personal card live!";
+    });
+
+    modeBtn.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
+</body>
+</html>
