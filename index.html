@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charles Makori - Learning Hub & Profile</title>
+    <title>Charles Makori - Learning & Developer Hub</title>
     <style>
         :root {
             --primary: #2563eb;
+            --secondary: #1e40af;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #1e293b;
@@ -18,30 +19,65 @@
             color: var(--text-color);
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
-        header {
+        /* Navigation Bar */
+        navbar {
             background-color: var(--primary);
             color: white;
-            padding: 2rem 1rem;
-            text-align: center;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+        .nav-links a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+        
         .container {
             max-width: 900px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
-        /* Profile Hero Section */
-        .profile-card {
+        
+        /* Cards */
+        .card {
             background-color: var(--card-bg);
-            padding: 2.5rem 2rem;
+            padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            text-align: center;
             margin-bottom: 2rem;
         }
+        
+        /* Profile Hero Section */
+        .profile-card {
+            text-align: center;
+        }
         .profile-img {
-            width: 130px;
-            height: 130px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid var(--primary);
@@ -51,20 +87,24 @@
             margin: 0.5rem 0 0.2rem 0;
             color: var(--text-color);
         }
-        .profile-card p {
-            color: var(--muted-text);
+        .profile-card p.title {
+            color: var(--primary);
+            font-weight: 600;
             font-size: 1.1rem;
             margin-top: 0;
         }
-        /* Dashboard Cards */
-        .card {
-            background-color: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            margin-bottom: 1.5rem;
+        .bio {
+            color: var(--muted-text);
+            line-height: 1.6;
+            margin-top: 1rem;
+            text-align: left;
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
         }
+
         h2 { color: var(--primary); margin-top: 0; }
+        
         .btn {
             background-color: var(--primary);
             color: white;
@@ -78,44 +118,82 @@
             transition: opacity 0.2s;
         }
         .btn:hover { opacity: 0.9; }
-        ul { padding-left: 20px; }
-        li { margin-bottom: 0.5rem; }
-        a { color: var(--primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        
+        /* Contact List */
+        .contact-list {
+            list-style: none;
+            padding: 0;
+        }
+        .contact-list li {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+        .contact-list a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .contact-list a:hover {
+            text-decoration: underline;
+        }
+
+        ul.notes-list { padding-left: 20px; }
+        ul.notes-list li { margin-bottom: 0.75rem; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Welcome to My Learning & Developer Hub</h1>
-    </header>
+    <!-- Portal Navigation Bar -->
+    <navbar>
+        <div class="nav-brand">🎓 Charles Hub</div>
+        <ul class="nav-links">
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#live">Live Class</a></li>
+            <li><a href="#notes">Notes</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </navbar>
 
     <div class="container">
         
-        <!-- Profile Section with Your Picture -->
-        <div class="profile-card">
-            <img src="profile.jpg" alt="Profile Picture" class="profile-img">
+        <!-- About Me / Profile Section -->
+        <div id="about" class="card profile-card">
+            <img src="profile.jpg" alt="Charles Makori" class="profile-img">
             <h1>Charles Makori</h1>
-            <p>Developer & Instructor | Building modern web platforms and learning spaces.</p>
+            <p class="title">Software Developer & Instructor</p>
+            <div class="bio">
+                <strong>About Me:</strong> Welcome to my official learning platform! I am passionate about technology, web development, and empowering students with hands-on technical skills. Use this portal to join live classes, access curriculum materials, and connect with me directly.
+            </div>
         </div>
 
         <!-- Live Video Class Section -->
-        <div class="card">
+        <div id="live" class="card">
             <h2>🔴 Live Video Class</h2>
             <p>Join the ongoing or scheduled live class session with your instructor.</p>
             <a href="#" class="btn" target="_blank">Join Live Video Room</a>
         </div>
 
         <!-- Class Notes Section -->
-        <div class="card">
+        <div id="notes" class="card">
             <h2>📚 Download Class Notes</h2>
             <p>Access and download your study materials, PDFs, and assignment guides below:</p>
-            <ul>
+            <ul class="notes-list">
                 <li>📄 <a href="#" target="_blank">Introduction to Web Development (PDF)</a></li>
                 <li>📄 <a href="#" target="_blank">Advanced HTML & CSS Notes (PDF)</a></li>
                 <li>📄 <a href="#" target="_blank">JavaScript Basics Guide (PDF)</a></li>
             </ul>
         </div>
+
+        <!-- Contact Details Section -->
+        <div id="contact" class="card">
+            <h2>📞 Get in Touch</h2>
+            <p>Have questions or need assistance? Reach out to me directly through the channels below:</p>
+            <ul class="contact-list">
+                <li>📱 <strong>WhatsApp:</strong> <a href="https://wa.me/254108753049" target="_blank">+254 108 753 049</a></li>
+                <li>📧 <strong>Email:</strong> <a href="mailto:makoricharles629@gmail.com">makoricharles629@gmail.com</a></li>
+            </ul>
+        </div>
+
     </div>
 
 </body>
