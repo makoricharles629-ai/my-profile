@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charles Hub - Student Portal</title>
+    <title>Charles Hub - Science & Academic Portal</title>
     <style>
         :root {
-            --primary: #046a38;
+            --primary: #046a38; /* University Green */
             --primary-hover: #03522b;
             --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
             --text-color: #1e293b;
             --muted-text: #64748b;
+            --sidebar-width: 260px;
         }
 
         * {
@@ -22,10 +24,11 @@
 
         body {
             background-color: var(--bg-color);
+            color: var(--text-color);
             min-height: 100vh;
         }
 
-        /* Split Screen Container (Login View) */
+        /* --- AUTH VIEW (Login / Sign Up) --- */
         #auth-view {
             display: flex;
             width: 100%;
@@ -44,7 +47,7 @@
         .hero-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.1) 100%);
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.1) 100%);
         }
 
         .hero-text {
@@ -56,15 +59,14 @@
         }
 
         .hero-text h1 {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 700;
             line-height: 1.2;
             margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .hero-text p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.9;
         }
 
@@ -80,7 +82,7 @@
 
         .form-container {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             background: #ffffff;
             padding: 2.5rem;
             border-radius: 12px;
@@ -98,16 +100,15 @@
         }
 
         .form-container h2 {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             color: var(--primary);
             margin-bottom: 0.3rem;
-            font-weight: 700;
         }
 
         .form-container p.subtitle {
             color: var(--muted-text);
-            font-size: 0.95rem;
-            margin-bottom: 1.8rem;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group {
@@ -120,12 +121,12 @@
             font-weight: 600;
             color: var(--text-color);
             margin-bottom: 0.4rem;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: 0.75rem 1rem;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             background-color: #f1f5f9;
@@ -138,39 +139,17 @@
             background-color: #ffffff;
         }
 
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-options label {
-            color: var(--muted-text);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            cursor: pointer;
-        }
-
-        .form-options a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
         .btn-submit {
             width: 100%;
             background-color: var(--primary);
             color: white;
-            padding: 0.85rem;
+            padding: 0.8rem;
             border: none;
             border-radius: 6px;
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background 0.2s;
         }
 
         .btn-submit:hover {
@@ -178,7 +157,7 @@
         }
 
         .toggle-text {
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
             font-size: 0.9rem;
             color: var(--muted-text);
         }
@@ -190,69 +169,180 @@
             text-decoration: none;
         }
 
-        /* STUDENT DASHBOARD VIEW (Appears after sign in) */
+        /* --- DASHBOARD VIEW (University Portal Style) --- */
         #dashboard-view {
             display: none;
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            min-height: 100vh;
         }
 
-        .dash-header {
+        .portal-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
             background-color: var(--primary);
             color: white;
-            padding: 1.5rem 2rem;
-            border-radius: 12px;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.85rem 1.5rem;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar-menu li.active a, .sidebar-menu li a:hover {
+            background-color: var(--primary-hover);
+            color: white;
+            border-left: 4px solid #ffffff;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 2rem;
+        }
+
+        .top-navbar {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             margin-bottom: 2rem;
         }
 
-        .dash-card {
-            background-color: #ffffff;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            margin-bottom: 1.5rem;
-        }
-
-        .dash-card h2 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
+        .user-welcome {
+            font-weight: 600;
+            color: var(--text-color);
         }
 
         .logout-btn {
-            background: #ffffff;
-            color: var(--primary);
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
             padding: 0.5rem 1rem;
             border-radius: 6px;
-            border: none;
             font-weight: bold;
             cursor: pointer;
         }
 
-        @media (max-width: 850px) {
-            #auth-view {
-                flex-direction: column;
-                height: auto;
-            }
-            .hero-section {
-                min-height: 200px;
-                flex: none;
-            }
+        /* Content Panels */
+        .panel {
+            display: none;
+        }
+        .panel.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .profile-banner {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .profile-banner img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+        }
+
+        /* Forms & Inputs inside panels */
+        textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tutorial-box {
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 70px; }
+            .sidebar-header span, .sidebar-menu span { display: none; }
+            .main-content { margin-left: 70px; }
+            #auth-view { flex-direction: column; height: auto; }
+            .hero-section { min-height: 200px; flex: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- AUTHENTICATION VIEW (Login, Register, Reset) -->
+    <!-- AUTHENTICATION VIEW -->
     <div id="auth-view">
         <div class="hero-section">
             <div class="hero-overlay"></div>
             <div class="hero-text">
-                <h1>Transforming Lives... Through Learning</h1>
-                <p>Welcome to Charles Makori's Student & Developer Portal</p>
+                <h1>Transforming Lives Through Science</h1>
+                <p>Charles Makori - Upcoming Professor Mastering in Physics & Chemistry</p>
             </div>
         </div>
 
@@ -261,22 +351,17 @@
             <div id="login-card" class="form-container">
                 <img src="profile.jpg" alt="Charles Makori" class="brand-logo">
                 <h2>Hi, welcome back</h2>
-                <p class="subtitle">Please fill in your details to log in</p>
+                <p class="subtitle">Log in to your academic portal</p>
 
                 <form onsubmit="handleLogin(event)">
                     <div class="form-group">
-                        <label for="username">Username </label>
-                        <input type="text" id="username" placeholder=" Student Name" required>
+                        <label for="username">Username / Student Name</label>
+                        <input type="text" id="username" placeholder="Enter username" required>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="••••••••••••" required>
-                    </div>
-
-                    <div class="form-options">
-                        <label><input type="checkbox"> Remember me</label>
-                        <a href="#" onclick="showForm('reset')">Forgot Password?</a>
+                        <input type="password" id="password" placeholder="••••••••" required>
                     </div>
 
                     <button type="submit" class="btn-submit">Sign In</button>
@@ -291,15 +376,12 @@
             <div id="signup-card" class="form-container" style="display: none;">
                 <img src="profile.jpg" alt="Charles Makori" class="brand-logo">
                 <h2>Create Account</h2>
-                <p class="subtitle">Set your username & password</p>
+                <p class="subtitle">Join the learning hub</p>
 
                 <form onsubmit="handleSignUp(event)">
                     <div class="form-group">
                         <label for="new-username">Full Name / Username</label>
                         <input type="text" id="new-username" placeholder="Enter your full name" required>
-                    </div>
-                    <div class="form-group">
-                        
                     </div>
                     <div class="form-group">
                         <label for="new-password">Set Password</label>
@@ -313,128 +395,247 @@
                     Already have an account? <a onclick="showForm('login')">Sign In</a>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- RESET PASSWORD FORM -->
-            <div id="reset-card" class="form-container" style="display: none;">
-                <img src="profile.jpg" alt="Charles Makori" class="brand-logo">
-                <h2>Reset Password</h2>
-                <p class="subtitle">Enter your email to reset your login</p>
-
-                <form onsubmit="handleReset(event)">
-                    <div class="form-group">
-                        <label for="reset-email">Email Address</label>
-                        <input type="email" id="reset-email" placeholder="Enter your registered email" required>
-                    </div>
-                    <button type="submit" class="btn-submit">Send Reset Link</button>
-                </form>
-
-                <div class="toggle-text">
-                    Remembered password? <a onclick="showForm('login')">Sign In</a>
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboard-view">
+        <div class="portal-layout">
+            
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <span>🔬 Science Hub</span>
                 </div>
+                <ul class="sidebar-menu">
+                    <li class="active" onclick="switchTab('home', this)"><a>🏠 <span>Dashboard Home</span></a></li>
+                    <li onclick="switchTab('junior', this)"><a>🧪 <span>Junior Secondary (G7-9)</span></a></li>
+                    <li onclick="switchTab('senior', this)"><a>⚡ <span>Senior Secondary (Grade 10)</span></a></li>
+                    <li onclick="switchTab('university', this)"><a>🎓 <span>University Tutorials</span></a></li>
+                    <li onclick="switchTab('profile', this)"><a>👤 <span>About Instructor</span></a></li>
+                </ul>
+            </div>
+
+            <!-- Main Content Panel -->
+            <div class="main-content">
+                <div class="top-navbar">
+                    <div class="user-welcome" id="welcome-msg">Welcome back, Student</div>
+                    <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+                </div>
+
+                <!-- TAB 1: HOME / DASHBOARD -->
+                <div id="panel-home" class="panel active">
+                    <div class="card profile-banner">
+                        <img src="profile.jpg" alt="Charles Makori">
+                        <div>
+                            <h2>Welcome to Your Academic Portal</h2>
+                            <p style="color: var(--muted-text); margin-top: 5px;">Your gateway to mastering Integrated Science, Physics, and Chemistry. Select a category from the sidebar to access live classes, submit assignments for simplified feedback, or watch premium university tutorials.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2>🔴 Live Video Class & Consultation</h2>
+                        <p>Join scheduled interactive live classes for Q&A and assignment reviews.</p>
+                        <br>
+                        <a href="#" class="btn-submit" style="display:inline-block; width:auto; text-decoration:none; padding: 0.75rem 1.5rem;" target="_blank">Join Active Video Room</a>
+                    </div>
+                </div>
+
+                <!-- TAB 2: JUNIOR SECONDARY (Grades 7, 8, 9) -->
+                <div id="panel-junior" class="panel">
+                    <div class="card">
+                        <h2>🧪 Junior Secondary - Integrated Science (Grades 7, 8, 9)</h2>
+                        <p>Access notes, ask questions, and submit challenging Integrated Science tasks for simplified step-by-step feedback.</p>
+                    </div>
+
+                    <div class="card">
+                        <h2>📝 Submit Assignment for Simplification</h2>
+                        <form onsubmit="submitAssignment(event, 'Junior Secondary')">
+                            <label>Select Grade:</label>
+                            <select id=" junior-grade">
+                                <option>Grade 7 - Integrated Science</option>
+                                <option>Grade 8 - Integrated Science</option>
+                                <option>Grade 9 - Integrated Science</option>
+                            </select>
+                            <label>Describe your question or paste assignment details:</label>
+                            <textarea rows="4" placeholder="Type assignment here..." required></textarea>
+                            <button type="submit" class="btn-submit" style="width: auto; padding: 0.6rem 1.2rem;">Submit for Simplification</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h2>📚 Downloadable Class Notes</h2>
+                        <ul style="padding-left: 20px; line-height: 2;">
+                            <li>📄 <a href="CHARLES_MAKORI_TEACHING_PRACTICUM_REPORT.pdf" target="_blank">Integrated Science Fundamentals (PDF)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TAB 3: SENIOR SECONDARY (Grade 10) -->
+                <div id="panel-senior" class="panel">
+                    <div class="card">
+                        <h2>⚡ Senior Secondary - Physics & Chemistry (Grade 10)</h2>
+                        <p>Advanced problem-solving, formula breakdowns, and concept simplification for Grade 10 students.</p>
+                    </div>
+
+                    <div class="card">
+                        <h2>📝 Submit Physics & Chemistry Assignment</h2>
+                        <form onsubmit="submitAssignment(event, 'Senior Secondary')">
+                            <label>Select Subject:</label>
+                            <select>
+                                <option>Grade 10 - Physics</option>
+                                <option>Grade 10 - Chemistry</option>
+                            </select>
+                            <label>Paste assignment task or question:</label>
+                            <textarea rows="4" placeholder="Enter problem details..." required></textarea>
+                            <button type="submit" class="btn-submit" style="width: auto; padding: 0.6rem 1.2rem;">Get Simplified Feedback</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h2>📚 Senior Secondary Study Guides</h2>
+                        <ul style="padding-left: 20px; line-height: 2;">
+                            <li>📄 <a href="CHARLES_MAKORI_TEACHING_PRACTICUM_REPORT.pdf" target="_blank">Grade 10 Physics & Chemistry Notes (PDF)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TAB 4: UNIVERSITY TUTORIALS & PAID SUPPORT -->
+                <div id="panel-university" class="panel">
+                    <div class="card">
+                        <h2>🎓 University Physics & Chemistry Task Support</h2>
+                        <p>Get expert help tackling complex university-level Physics and Chemistry tasks. Access premium video tutorials starting from as low as **KSH 50** depending on content quality.</p>
+                    </div>
+
+                    <div class="card">
+                        <h2>📺 Premium Video Tutorials</h2>
+                        
+                        <div class="tutorial-box">
+                            <div>
+                                <strong>Advanced Thermodynamics & Spectroscopy</strong>
+                                <p style="font-size: 0.85rem; color: var(--muted-text);">Detailed step-by-step solution tutorial</p>
+                            </div>
+                            <div>
+                                <span class="badge">KSH 50</span>
+                                <button onclick="buyTutorial('Advanced Thermodynamics')" class="btn-submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-top: 5px;">Unlock via M-Pesa</button>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-box">
+                            <div>
+                                <strong>Quantum Mechanics & Electrodynamics Masterclass</strong>
+                                <p style="font-size: 0.85rem; color: var(--muted-text);">Full problem-solving breakdown</p>
+                            </div>
+                            <div>
+                                <span class="badge">KSH 100</span>
+                                <button onclick="buyTutorial('Quantum Mechanics')" class="btn-submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-top: 5px;">Unlock via M-Pesa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: ABOUT INSTRUCTOR -->
+                <div id="panel-profile" class="panel">
+                    <div class="card profile-banner">
+                        <img src="profile.jpg" alt="Charles Makori">
+                        <div>
+                            <h2>Charles Makori</h2>
+                            <p style="color: var(--primary); font-weight: 600;">Upcoming Professor Mastering in Physics & Chemistry</p>
+                            <p style="color: var(--muted-text); margin-top: 10px;">Dedicated to simplifying complex scientific concepts for learners across junior secondary, senior secondary, and university levels.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2>📞 Direct Contacts</h2>
+                        <p>📱 WhatsApp: <a href="https://wa.me/254108753049" target="_blank">+254 108 753 049</a></p>
+                        <p>📧 Email: <a href="mailto:makoricharles629@gmail.com">makoricharles629@gmail.com</a></p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- STUDENT DASHBOARD VIEW (Reveals on successful login) -->
-    <div id="dashboard-view">
-        <div class="dash-header">
-            <h1>🎓 Student Learning Hub</h1>
-            <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
-        </div>
+    <script>
+        let currentUser = "";
 
-        <div class="dash-card">
-            <h2>🔴 Live Video Class</h2>
-            <p>Join the live video classroom session with your instructor.</p>
-            <br>
-            <a href="#" class="btn-submit" style="display: inline-block; text-align: center; text-decoration: none; max-width: 200px;" target="_blank">Join Video Room</a>
-        </div>
-
-        <div class="dash-card">
-            <h2>📚 Download Class Notes</h2>
-            <p>Access your uploaded study documents:</p>
-            <br>
-            <ul style="padding-left: 20px; line-height: 1.8;">
-                
-            </ul>
-        </div>
-        
-        <div class="dash-card">
-            <h2>📞 Contact Instructor</h2>
-            <p>📱 WhatsApp: <a href="https://wa.me/254108753049" target="_blank">+254 108 753 049</a></p>
-            <p>📧 Email: <a href="mailto:makoricharles629@gmail.com">makoricharles629@gmail.com</a></p>
-        </div>
-    </div>
-<script>
-    function showForm(formType) {
-        document.getElementById('login-card').style.display = 'none';
-        document.getElementById('signup-card').style.display = 'none';
-        document.getElementById('reset-card').style.display = 'none';
-
-        if (formType === 'login') {
-            document.getElementById('login-card').style.display = 'block';
-        } else if (formType === 'signup') {
-            document.getElementById('signup-card').style.display = 'block';
-        } else if (formType === 'reset') {
-            document.getElementById('reset-card').style.display = 'block';
-        }
-    }
-
-    // Handles creating and saving the account securely
-function handleSignUp(e) {
-        e.preventDefault();
-        const username = document.getElementById('new-username').value.trim();
-        const password = document.getElementById('new-password').value;
-
-        if (!username || !password) {
-            alert("Please fill in all fields.");
-            return;
+        function showForm(formType) {
+            document.getElementById('login-card').style.display = 'none';
+            document.getElementById('signup-card').style.display = 'none';
+            if (formType === 'login') document.getElementById('login-card').style.display = 'block';
+            if (formType === 'signup') document.getElementById('signup-card').style.display = 'block';
         }
 
-        if (localStorage.getItem(username)) {
-            alert("Username already exists! Please choose another or sign in.");
-            return;
+        function handleSignUp(e) {
+            e.preventDefault();
+            const username = document.getElementById('new-username').value.trim();
+            const password = document.getElementById('new-password').value;
+
+            if (localStorage.getItem(username)) {
+                alert("Username already exists!");
+                return;
+            }
+
+            localStorage.setItem(username, JSON.stringify({ username, password }));
+            alert("Account created successfully! Please sign in.");
+            showForm('login');
         }
 
-        const userData = { username, password };
-        localStorage.setItem(username, JSON.stringify(userData));
+        function handleLogin(e) {
+            e.preventDefault();
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value;
 
-        alert("Account created successfully! You can now sign in with your password.");
-        showForm('login');
-    }   
+            const stored = localStorage.getItem(usernameInput);
+            if (!stored) {
+                alert("Account not found. Please sign up first.");
+                return;
+            }
 
-    // Handles verifying username and strict password matching
-    function handleLogin(e) {
-        e.preventDefault();
-        const usernameInput = document.getElementById('username').value.trim();
-        const passwordInput = document.getElementById('password').value;
+            const user = JSON.parse(stored);
+            if (user.password !== passwordInput) {
+                alert("Incorrect password!");
+                return;
+            }
 
-        const storedUserJSON = localStorage.getItem(usernameInput);
-
-        if (!storedUserJSON) {
-            alert("Account not found! Please check your username or Sign Up first.");
-            return;
+            currentUser = user.username;
+            document.getElementById('welcome-msg').innerText = "Welcome back, " + currentUser;
+            document.getElementById('auth-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
         }
 
-        const userData = JSON.parse(storedUserJSON);
-
-        if (userData.password !== passwordInput) {
-            alert("Incorrect password! Please try again.");
-            return;
+        function handleLogout() {
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('auth-view').style.display = 'flex';
         }
 
-        alert("Login successful! Welcome, " + userData.username);
-        document.getElementById('auth-view').style.display = 'none';
-        document.getElementById('dashboard-view').style.display = 'block';
-    }
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li').forEach(l => l.classList.remove('active'));
 
-    function handleReset(e) {
-        e.preventDefault();
-        alert("A password reset link has been sent to your email.");
-        showForm('login');
-    }
+            document.getElementById('panel-home').style.display = 'none';
+            document.getElementById('panel-junior').style.display = 'none';
+            document.getElementById('panel-senior').style.display = 'none';
+            document.getElementById('panel-university').style.display = 'none';
+            document.getElementById('panel-profile').style.display = 'none';
 
-    function handleLogout() {
-        document.getElementById('dashboard-view').style.display = 'none';
-        document.getElementById('auth-view').style.display = 'flex';
-    }
-</script>
+            document.getElementById('panel-' + tabId).style.display = 'block';
+            element.classList.add('active');
+        }
+
+        function submitAssignment(e, level) {
+            e.preventDefault();
+            alert("Assignment submitted successfully! Instructor Charles Makori will review it and provide simplified feedback shortly.");
+            e.target.reset();
+        }
+
+        function buyTutorial(title) {
+            let phone = prompt("Enter your M-Pesa Phone Number (e.g., 0712345678):");
+            if (phone) {
+                alert("STK Push sent to " + phone + ". Once payment is confirmed, access to '" + title + "' will be unlocked!");
+            }
+        }
+    </script>
+</body>
+</html>
+    
