@@ -6,7 +6,7 @@
     <title>Charles Hub - Student Portal</title>
     <style>
         :root {
-            --primary: #046a38; /* Classic portal green */
+            --primary: #046a38;
             --primary-hover: #03522b;
             --bg-color: #f4f6f9;
             --text-color: #1e293b;
@@ -22,22 +22,17 @@
 
         body {
             background-color: var(--bg-color);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: 100vh;
         }
 
-        /* Split Screen Container */
-        .portal-wrapper {
+        /* Split Screen Container (Login View) */
+        #auth-view {
             display: flex;
             width: 100%;
             height: 100vh;
-            background-color: #ffffff;
             overflow: hidden;
         }
 
-        /* Left Hero Banner (Your Picture) */
         .hero-section {
             flex: 1.2;
             position: relative;
@@ -73,7 +68,6 @@
             opacity: 0.9;
         }
 
-        /* Right Form Section */
         .form-section {
             flex: 1;
             display: flex;
@@ -116,7 +110,6 @@
             margin-bottom: 1.8rem;
         }
 
-        /* Input Styles */
         .form-group {
             text-align: left;
             margin-bottom: 1.2rem;
@@ -138,7 +131,6 @@
             background-color: #f1f5f9;
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         .form-group input:focus {
@@ -168,10 +160,6 @@
             font-weight: 600;
         }
 
-        .form-options a:hover {
-            text-decoration: underline;
-        }
-
         .btn-submit {
             width: 100%;
             background-color: var(--primary);
@@ -198,37 +186,68 @@
         .toggle-text a {
             color: var(--primary);
             font-weight: 700;
+            cursor: pointer;
             text-decoration: none;
+        }
+
+        /* STUDENT DASHBOARD VIEW (Appears after sign in) */
+        #dashboard-view {
+            display: none;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .dash-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .dash-card {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .dash-card h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .logout-btn {
+            background: #ffffff;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .toggle-text a:hover {
-            text-decoration: underline;
-        }
-
-        /* Mobile Responsive */
         @media (max-width: 850px) {
-            .portal-wrapper {
+            #auth-view {
                 flex-direction: column;
+                height: auto;
             }
             .hero-section {
-                min-height: 220px;
+                min-height: 200px;
                 flex: none;
-            }
-            .hero-text h1 {
-                font-size: 1.6rem;
-            }
-            .form-section {
-                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="portal-wrapper">
-        
-        <!-- Left Side: Custom Hero Banner with Your Picture -->
+    <!-- AUTHENTICATION VIEW (Login, Register, Reset) -->
+    <div id="auth-view">
         <div class="hero-section">
             <div class="hero-overlay"></div>
             <div class="hero-text">
@@ -237,9 +256,7 @@
             </div>
         </div>
 
-        <!-- Right Side: Interactive Login / Register Form -->
         <div class="form-section">
-            
             <!-- LOGIN FORM -->
             <div id="login-card" class="form-container">
                 <img src="profile.jpg" alt="Charles Makori" class="brand-logo">
@@ -248,8 +265,8 @@
 
                 <form onsubmit="handleLogin(event)">
                     <div class="form-group">
-                        <label for="username">Username .</label>
-                        <input type="text" id="username" placeholder=" Student Name ." required>
+                        <label for="username">Username </label>
+                        <input type="text" id="username" placeholder=" Student Name" required>
                     </div>
 
                     <div class="form-group">
@@ -281,12 +298,10 @@
                         <label for="new-username">Full Name / Username</label>
                         <input type="text" id="new-username" placeholder="Enter your full name" required>
                     </div>
-
                     <div class="form-group">
                         <label for="new-email">Email Address</label>
                         <input type="email" id="new-email" placeholder="student@example.com" required>
                     </div>
-
                     <div class="form-group">
                         <label for="new-password">Set Password</label>
                         <input type="password" id="new-password" placeholder="Create password" required>
@@ -311,7 +326,6 @@
                         <label for="reset-email">Email Address</label>
                         <input type="email" id="reset-email" placeholder="Enter your registered email" required>
                     </div>
-
                     <button type="submit" class="btn-submit">Send Reset Link</button>
                 </form>
 
@@ -319,13 +333,40 @@
                     Remembered password? <a onclick="showForm('login')">Sign In</a>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <!-- STUDENT DASHBOARD VIEW (Reveals on successful login) -->
+    <div id="dashboard-view">
+        <div class="dash-header">
+            <h1>🎓 Student Learning Hub</h1>
+            <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
         </div>
 
+        <div class="dash-card">
+            <h2>🔴 Live Video Class</h2>
+            <p>Join the live video classroom session with your instructor.</p>
+            <br>
+            <a href="#" class="btn-submit" style="display: inline-block; text-align: center; text-decoration: none; max-width: 200px;" target="_blank">Join Video Room</a>
+        </div>
+
+        <div class="dash-card">
+            <h2>📚 Download Class Notes</h2>
+            <p>Access your uploaded study documents:</p>
+            <br>
+            <ul style="padding-left: 20px; line-height: 1.8;">
+                <li>📄 <a href="CHARLES_MAKORI_TEACHING_PRACTICUM_REPORT.pdf" target="_blank">Teaching Practicum Report (PDF)</a></li>
+            </ul>
+        </div>
+        
+        <div class="dash-card">
+            <h2>📞 Contact Instructor</h2>
+            <p>📱 WhatsApp: <a href="https://wa.me/254108753049" target="_blank">+254 108 753 049</a></p>
+            <p>📧 Email: <a href="mailto:makoricharles629@gmail.com">makoricharles629@gmail.com</a></p>
+        </div>
     </div>
 
     <script>
-        // Switch between Sign In, Sign Up, and Password Reset screens
         function showForm(formType) {
             document.getElementById('login-card').style.display = 'none';
             document.getElementById('signup-card').style.display = 'none';
@@ -342,19 +383,27 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            alert("Login successful! Redirecting to student dashboard...");
+            // Hide login screen and show student dashboard
+            document.getElementById('auth-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
         }
 
         function handleSignUp(e) {
             e.preventDefault();
-            alert("Account created successfully! You can now log in with your new password.");
+            alert("Account created successfully! You can now sign in with your password.");
             showForm('login');
         }
 
         function handleReset(e) {
             e.preventDefault();
-            alert("A password reset link has been sent to your email!");
+            alert("A password reset link has been sent to your email.");
             showForm('login');
+        }
+
+        function handleLogout() {
+            // Hide dashboard and bring back login screen
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('auth-view').style.display = 'flex';
         }
     </script>
 
