@@ -365,47 +365,78 @@
             <p>📧 Email: <a href="mailto:makoricharles629@gmail.com">makoricharles629@gmail.com</a></p>
         </div>
     </div>
+<script>
+    function showForm(formType) {
+        document.getElementById('login-card').style.display = 'none';
+        document.getElementById('signup-card').style.display = 'none';
+        document.getElementById('reset-card').style.display = 'none';
 
-    <script>
-        function showForm(formType) {
-            document.getElementById('login-card').style.display = 'none';
-            document.getElementById('signup-card').style.display = 'none';
-            document.getElementById('reset-card').style.display = 'none';
+        if (formType === 'login') {
+            document.getElementById('login-card').style.display = 'block';
+        } else if (formType === 'signup') {
+            document.getElementById('signup-card').style.display = 'block';
+        } else if (formType === 'reset') {
+            document.getElementById('reset-card').style.display = 'block';
+        }
+    }
 
-            if (formType === 'login') {
-                document.getElementById('login-card').style.display = 'block';
-            } else if (formType === 'signup') {
-                document.getElementById('signup-card').style.display = 'block';
-            } else if (formType === 'reset') {
-                document.getElementById('reset-card').style.display = 'block';
-            }
+    // 1. HANDLE SIGN UP (Saves username & password securely in browser memory)
+    function handleSignUp(e) {
+        e.preventDefault();
+        const username = document.getElementById('new-username').value.trim();
+        const email = document.getElementById('new-email').value.trim();
+        const password = document.getElementById('new-password').value;
+
+        // Check if user already exists
+        if (localStorage.getItem(username)) {
+            alert("Username already exists! Please choose another or sign in.");
+            return;
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            // Hide login screen and show student dashboard
-            document.getElementById('auth-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
+        // Save account data
+        const userData = { username, email, password };
+        localStorage.setItem(username, JSON.stringify(userData));
+
+        alert("Account created successfully! You can now sign in with your password.");
+        showForm('login');
+    }
+
+    // 2. HANDLE LOGIN (Verifies exact username and password match)
+    function handleLogin(e) {
+        e.preventDefault();
+        const usernameInput = document.getElementById('username').value.trim();
+        const passwordInput = document.getElementById('password').value;
+
+        const storedUserJSON = localStorage.getItem(usernameInput);
+
+        if (!storedUserJSON) {
+            alert("Account not found! Please check your username or Sign Up first.");
+            return;
         }
 
-        function handleSignUp(e) {
-            e.preventDefault();
-            alert("Account created successfully! You can now sign in with your password.");
-            showForm('login');
+        const userData = JSON.parse(storedUserJSON);
+
+        // Check if password matches
+        if (userData.password !== passwordInput) {
+            alert("Incorrect password! Please try again.");
+            return;
         }
 
-        function handleReset(e) {
-            e.preventDefault();
-            alert("A password reset link has been sent to your email.");
-            showForm('login');
-        }
+        // If password is correct, open student dashboard
+        alert("Login successful! Welcome, " + userData.username);
+        document.getElementById('auth-view').style.display = 'none';
+        document.getElementById('dashboard-view').style.display = 'block';
+    }
 
-        function handleLogout() {
-            // Hide dashboard and bring back login screen
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('auth-view').style.display = 'flex';
-        }
-    </script>
+    function handleReset(e) {
+        e.preventDefault();
+        alert("A password reset link has been sent to your email.");
+        showForm('login');
+    }
 
-</body>
-</html>
+    function handleLogout() {
+        document.getElementById('dashboard-view').style.display = 'none';
+        document.getElementById('auth-view').style.display = 'flex';
+    }
+</script>
+  
