@@ -628,13 +628,15 @@
             alert("Assignment submitted successfully! Instructor Charles Makori will review it and provide simplified feedback shortly.");
             e.target.reset();
         }
-
-        function buyTutorial(title) {
-            let phone = prompt("Enter your M-Pesa Phone Number (e.g., 0712345678):");
-            if (phone) {
-                alert("STK Push sent to " + phone + ". Once payment is confirmed, access to '" + title + "' will be unlocked!");
-            }
+function buyTutorial(title) {
+        let confirmed = confirm("To unlock '" + title + "', please send KSH 50 to M-Pesa Line: 0769765694 (Charles nyamao).\n\nClick OK to automatically open WhatsApp and send your payment confirmation code for access!");
+        
+        if (confirmed) {
+            // Opens your WhatsApp with a pre-filled message
+            window.open("https://wa.me/254108753049?text=Hello%20Charles,%20I%20have%20sent%20KSH%2050%20for%20the%20tutorial:%20" + encodeURIComponent(title) + ".%20Here%20is%20my%20M-Pesa%20confirmation%20code:", "_blank");
         }
+    }
+        
     </script>
 </body>
 </html>
