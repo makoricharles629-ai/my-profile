@@ -379,20 +379,23 @@
         }
     }
 
-    // 1. HANDLE SIGN UP (Saves username & password securely in browser memory)
+    // Handles creating and saving the account securely
     function handleSignUp(e) {
         e.preventDefault();
         const username = document.getElementById('new-username').value.trim();
         const email = document.getElementById('new-email').value.trim();
         const password = document.getElementById('new-password').value;
 
-        // Check if user already exists
+        if (!username || !email || !password) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
         if (localStorage.getItem(username)) {
             alert("Username already exists! Please choose another or sign in.");
             return;
         }
 
-        // Save account data
         const userData = { username, email, password };
         localStorage.setItem(username, JSON.stringify(userData));
 
@@ -400,7 +403,7 @@
         showForm('login');
     }
 
-    // 2. HANDLE LOGIN (Verifies exact username and password match)
+    // Handles verifying username and strict password matching
     function handleLogin(e) {
         e.preventDefault();
         const usernameInput = document.getElementById('username').value.trim();
@@ -415,13 +418,11 @@
 
         const userData = JSON.parse(storedUserJSON);
 
-        // Check if password matches
         if (userData.password !== passwordInput) {
             alert("Incorrect password! Please try again.");
             return;
         }
 
-        // If password is correct, open student dashboard
         alert("Login successful! Welcome, " + userData.username);
         document.getElementById('auth-view').style.display = 'none';
         document.getElementById('dashboard-view').style.display = 'block';
@@ -438,4 +439,3 @@
         document.getElementById('auth-view').style.display = 'flex';
     }
 </script>
-  
