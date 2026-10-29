@@ -380,13 +380,12 @@
     }
 
     // Handles creating and saving the account securely
-    function handleSignUp(e) {
+function handleSignUp(e) {
         e.preventDefault();
         const username = document.getElementById('new-username').value.trim();
-        const email = document.getElementById('new-email').value.trim();
         const password = document.getElementById('new-password').value;
 
-        if (!username || !email || !password) {
+        if (!username || !password) {
             alert("Please fill in all fields.");
             return;
         }
@@ -396,12 +395,12 @@
             return;
         }
 
-        const userData = { username, email, password };
+        const userData = { username, password };
         localStorage.setItem(username, JSON.stringify(userData));
 
         alert("Account created successfully! You can now sign in with your password.");
         showForm('login');
-    }
+    }   
 
     // Handles verifying username and strict password matching
     function handleLogin(e) {
